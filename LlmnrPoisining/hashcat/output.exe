@@ -1,0 +1,81 @@
+hashcat (v6.2.6) starting
+
+Successfully initialized the NVIDIA main driver CUDA runtime library.
+
+Failed to initialize NVIDIA RTC library.
+
+* Device #2: CUDA SDK Toolkit not installed or incorrectly installed.
+             CUDA SDK Toolkit required for proper device support and utilization.
+             Falling back to OpenCL runtime.
+
+* Device #2: WARNING! Kernel exec timeout is not disabled.
+             This may cause "CL_OUT_OF_RESOURCES" or related errors.
+             To disable the timeout, see: https://hashcat.net/q/timeoutpatch
+HIP API (HIP 0.0.3224)
+======================
+* Device #1: AMD Radeon(TM) Graphics, skipped
+
+OpenCL API (OpenCL 3.0 CUDA 12.0.147) - Platform #1 [NVIDIA Corporation]
+========================================================================
+* Device #2: NVIDIA GeForce GTX 1650, 3520/4095 MB (1023 MB allocatable), 14MCU
+
+OpenCL API (OpenCL 2.1 AMD-APP (3224.5)) - Platform #2 [Advanced Micro Devices, Inc.]
+=====================================================================================
+* Device #3: AMD Radeon(TM) Graphics, 3072/6213 MB (2423 MB allocatable), 8MCU
+
+Minimum password length supported by kernel: 0
+Maximum password length supported by kernel: 27
+
+Counting lines in hash.txt. Please be patient...Counted lines in hash.txtParsed Hashes: 1/1 (100.00%)Parsed Hashes: 1/1 (100.00%)Sorting hashes. Please be patient...Sorted hashesRemoving duplicate hashes. Please be patient...Removed duplicate hashesSorting salts. Please be patient...Sorted saltsComparing hashes with potfile entries. Please be patient...Compared hashes with potfile entriesGenerating bitmap tables...Generated bitmap tablesHashes: 1 digests; 1 unique digests, 1 unique salts
+Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+Rules: 1
+
+Optimizers applied:
+* Optimized-Kernel
+* Zero-Byte
+* Not-Iterated
+* Single-Hash
+* Single-Salt
+
+Watchdog: Temperature abort trigger set to 90c
+
+Initializing device kernels and memory. Please be patient...Initializing backend runtime for device #2. Please be patient...Initialized backend runtime for device #2Initializing backend runtime for device #3. Please be patient...Initialized backend runtime for device #3Host memory required for this attack: 2100 MB
+
+Initialized device kernels and memoryStarting self-test. Please be patient...Finished self-testDictionary cache hit:
+* Filename..: cracker.txt
+* Passwords.: 1000998
+* Bytes.....: 9537513
+* Keyspace..: 1000998
+
+Starting autotune. Please be patient...Finished autotune                                                          [s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit =>                                                           Driver temperature threshold met on GPU #2. Expect reduced performance.
+[s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit =>                                                           Approaching final keyspace - workload adjusted.
+
+[s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit =>                                                           Driver temperature threshold met on GPU #2. Expect reduced performance.
+[s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit =>                                                           Session..........: hashcat
+Status...........: Exhausted
+Hash.Mode........: 5600 (NetNTLMv2)
+Hash.Target......: LIDORSHOHAT@GMAIL.COM::MicrosoftAccount:77126befd34...000000
+Time.Started.....: Sat Feb 11 16:32:33 2023 (1 sec)
+Time.Estimated...: Sat Feb 11 16:32:34 2023 (0 secs)
+Kernel.Feature...: Optimized Kernel
+Guess.Base.......: File (cracker.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#2.........:   919.4 kH/s (0.40ms) @ Accel:128 Loops:1 Thr:256 Vec:1
+Speed.#3.........:   263.1 kH/s (1.20ms) @ Accel:256 Loops:1 Thr:256 Vec:1
+Speed.#*.........:  1182.5 kH/s
+Recovered........: 0/1 (0.00%) Digests (total), 0/1 (0.00%) Digests (new)
+Progress.........: 1000998/1000998 (100.00%)
+Rejected.........: 54/1000998 (0.01%)
+Restore.Point....: 865468/1000998 (86.46%)
+Restore.Sub.#2...: Salt:0 Amplifier:0-1 Iteration:0-1
+Restore.Sub.#3...: Salt:0 Amplifier:0-1 Iteration:0-1
+Candidate.Engine.: Device Generator
+Candidates.#2....: wE34duL8 -> freepass
+Candidates.#3....: YVyngFw -> xxxzzz0204
+Hardware.Mon.#2..: Temp: 45c Util: 17% Core:1500MHz Mem:5000MHz Bus:8
+Hardware.Mon.#3..: Util: 14% Core: 400MHz Mem:1600MHz Bus:16
+
+                                                          Driver temperature threshold met on GPU #2. Expect reduced performance.
+
+[s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit => Started: Sat Feb 11 16:32:26 2023
+Stopped: Sat Feb 11 16:32:36 2023
