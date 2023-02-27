@@ -15,7 +15,7 @@ if __name__ == '__main__':
     try:
         os.popen('Net use * /delete /Y').read()
         print('STARTING')
-        os.popen('Net use h: \\' + ip + r'\c$ /user:"' + user + r'" "' + password + '"-* /p:yes').read()
+        os.popen('Net use h: \\' + ip + r'\c$ /user:"' + user + r'" "' + password + '" /p:yes').read()
         print("CONNECTED")
         run = False
     except:
