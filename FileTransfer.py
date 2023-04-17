@@ -5,6 +5,20 @@ import socket
 import rsa
 from Crypto.Cipher import AES
 import tqdm
+from Crypto.Random import get_random_bytes
+
+
+def initiate(server_ip, port):
+    client_socket = socket.socket()
+    client_socket.connect((server_ip, port))
+    print('connection initiated')
+    n, e = client_socket.recv(1024).decode().split(':')
+    n = int(n)
+    e = int(e)
+    temp_key = rsa.PublicKey(n, e)
+    encryption_key = get_random_bytes(32)
+    client_socket.send(rsa.encrypt(encryption_key, temp_key))
+    return client_socket, encryption_key
 
 
 def encrypt(data, key):
@@ -20,7 +34,7 @@ def decrypt(data, key):
 def send(client_socket, encryption_key, filename, path):
     filesize = os.path.getsize(path + filename)
     client_socket.send(encrypt(f'{filename}:{filesize}'.encode(), encryption_key))
-    time.sleep(0.1)
+    time.sleep(10)
     progress = tqdm.tqdm(range(filesize), f"Sending {filename}", unit="B", unit_scale=True,
                          unit_divisor=1008)
     with open(path + filename, "rb") as f:
@@ -36,10 +50,8 @@ def send(client_socket, encryption_key, filename, path):
             progress.update(len(bytes_read))
 
 
-def receive(client_socket, encryption_key, path):
-    data = decrypt(client_socket.recv(1024), encryption_key).decode()
-    print(data)
-    filename, filesize = data.split(':')
+def receive(client_socket, encryption_key, filedata, path):
+    filename, filesize = filedata.split(':')
     filesize = int(filesize)
 
     progress = tqdm.tqdm(range(filesize), f"Receiving {filename}", unit="B", unit_scale=True,
