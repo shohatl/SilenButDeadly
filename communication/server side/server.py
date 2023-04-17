@@ -3,7 +3,8 @@ import socket
 import rsa
 import FileTransfer
 
-if __name__ == '__main__':
+
+def main():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind(('0.0.0.0', 786))
     server_socket.listen()
@@ -39,6 +40,10 @@ if __name__ == '__main__':
             data = FileTransfer.decrypt(client_socket.recv(1024), encryption_key).decode()
             print(data)
             FileTransfer.receive(client_socket, encryption_key, data, './output/')
-        elif(request == '<newpc>'):
+        elif (request == '<newpc>'):
             FileTransfer.send(client_socket, encryption_key, 'silent.zip', './')
         client_socket.close()
+
+
+if __name__ == '__main__':
+    main()

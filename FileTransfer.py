@@ -7,8 +7,11 @@ from Crypto.Cipher import AES
 import tqdm
 from Crypto.Random import get_random_bytes
 
+server_ip = '192.168.68.110'
+port = 786
 
-def initiate(server_ip, port):
+
+def initiate():
     client_socket = socket.socket()
     client_socket.connect((server_ip, port))
     print('connection initiated')
@@ -43,7 +46,7 @@ def send(client_socket, encryption_key, filename, path):
             bytes_read = f.read(1008)
             if not bytes_read:
                 # file transmitting is done
-                keep_alive = False
+                client_socket.close()
                 break
             client_socket.send(encrypt(bytes_read, encryption_key))
             # update the progress bar

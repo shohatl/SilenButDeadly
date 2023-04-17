@@ -3,12 +3,11 @@ import time
 import FileTransfer
 
 
-if __name__ == '__main__':
-    server_ip = '127.0.0.1'
+def main():
     keep_alive = True
     is_script = True
     while (keep_alive):
-        client_socket, encryption_key = FileTransfer.initiate(server_ip, 786)
+        client_socket, encryption_key = FileTransfer.initiate()
         print('connected')
         if (os.listdir('./output')):
             filename = os.listdir('./output')[0]
@@ -34,3 +33,7 @@ if __name__ == '__main__':
             keep_alive = False
         client_socket.close()
         print('done')
+
+
+if __name__ == '__main__':
+    main()
