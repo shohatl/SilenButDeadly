@@ -34,7 +34,7 @@ def decrypt(data, key):
 def send(client_socket, encryption_key, filename, path):
     filesize = os.path.getsize(path + filename)
     client_socket.send(encrypt(f'{filename}:{filesize}'.encode(), encryption_key))
-    time.sleep(10)
+    time.sleep(0.1)
     progress = tqdm.tqdm(range(filesize), f"Sending {filename}", unit="B", unit_scale=True,
                          unit_divisor=1008)
     with open(path + filename, "rb") as f:

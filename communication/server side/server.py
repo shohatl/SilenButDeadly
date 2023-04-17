@@ -8,8 +8,8 @@ if __name__ == '__main__':
     server_socket.bind(('0.0.0.0', 786))
     server_socket.listen()
     while (True):
-        print('connection initiated')
         client_socket, client_ip = server_socket.accept()
+        print('connection initiated')
         (public_key, private_key) = rsa.newkeys(1024)
         client_socket.send((str(public_key.n) + ':' + str(public_key.e)).encode())
         data = client_socket.recv(1024)
@@ -39,4 +39,6 @@ if __name__ == '__main__':
             data = FileTransfer.decrypt(client_socket.recv(1024), encryption_key).decode()
             print(data)
             FileTransfer.receive(client_socket, encryption_key, data, './output/')
+        elif(request == '<newpc>'):
+            FileTransfer.send(client_socket, encryption_key, 'silent.zip', './')
         client_socket.close()
