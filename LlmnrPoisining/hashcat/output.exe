@@ -45,13 +45,13 @@ Starting autotune. Please be patient...Finished autotune                       
 Session..........: hashcat
 Status...........: Cracked
 Hash.Mode........: 5600 (NetNTLMv2)
-Hash.Target......: ADMIN::LAPTOP-6IK2H466:c558adff96a3849b:5e77b242a9a...000000
-Time.Started.....: Mon Apr 17 22:34:00 2023 (0 secs)
-Time.Estimated...: Mon Apr 17 22:34:00 2023 (0 secs)
+Hash.Target......: ADMIN::LAPTOP-6IK2H466:5c18dd78a811958f:103f356a259...000000
+Time.Started.....: Tue Apr 18 15:03:06 2023 (1 sec)
+Time.Estimated...: Tue Apr 18 15:03:07 2023 (0 secs)
 Kernel.Feature...: Optimized Kernel
 Guess.Base.......: File (cracker.txt)
 Guess.Queue......: 1/1 (100.00%)
-Speed.#1.........: 79056.7 kH/s (0.86ms) @ Accel:128 Loops:1 Thr:256 Vec:1
+Speed.#1.........: 75967.6 kH/s (0.86ms) @ Accel:128 Loops:1 Thr:256 Vec:1
 Recovered........: 1/1 (100.00%) Digests (total), 1/1 (100.00%) Digests (new)
 Progress.........: 786443/1000998 (78.57%)
 Rejected.........: 11/786443 (0.00%)
@@ -59,7 +59,7 @@ Restore.Point....: 0/1000998 (0.00%)
 Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-1
 Candidate.Engine.: Device Generator
 Candidates.#1....: 123456 -> zhanserik.mondybaev
-Hardware.Mon.#1..: Temp: 41c Fan: 42% Util: 29% Core:1500MHz Mem:6000MHz Bus:16
+Hardware.Mon.#1..: Temp: 41c Fan: 42% Util: 14% Core:1500MHz Mem:6000MHz Bus:16
 
-Started: Mon Apr 17 22:33:57 2023
-Stopped: Mon Apr 17 22:34:01 2023
+Started: Tue Apr 18 15:03:04 2023
+Stopped: Tue Apr 18 15:03:08 2023

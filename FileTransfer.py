@@ -7,7 +7,7 @@ from Crypto.Cipher import AES
 import tqdm
 from Crypto.Random import get_random_bytes
 
-server_ip = '192.168.68.122'
+server_ip = '192.168.68.110'
 port = 786
 
 
@@ -49,6 +49,8 @@ def send(client_socket, encryption_key, filename, path):
             bytes_read = f.read(992)
             if not bytes_read:
                 # file transmitting is done
+                f.close()
+                client_socket.close()
                 break
             client_socket.sendall(encrypt(bytes_read, encryption_key))
             # update the progress bar
@@ -73,7 +75,7 @@ def receive(client_socket, encryption_key, filedata, path):
             # write to the file the bytes we just received
             bytes_read = decrypt(bytes_read, encryption_key)
             f.write(bytes_read)
-            f.flush()
+            os.fsync(f.fileno())
             # update the progress bar
             progress.update(len(bytes_read))
             os.fsync(f.fileno())
