@@ -7,7 +7,7 @@ from Crypto.Cipher import AES
 import tqdm
 from Crypto.Random import get_random_bytes
 
-server_ip = '192.168.68.110'
+server_ip = '192.168.68.122'
 port = 786
 
 
@@ -26,12 +26,15 @@ def initiate():
 
 def encrypt(data, key):
     cipher = AES.new(key, AES.MODE_EAX)
-    return cipher.nonce + cipher.encrypt(data)
-
+    ciphertext, tag = cipher.encrypt_and_digest(data)
+    return cipher.nonce + ciphertext + tag
 
 def decrypt(data, key):
-    cipher = AES.new(key, AES.MODE_EAX, nonce=data[0:16])
-    return cipher.decrypt(data[16:])
+    nonce = data[:16]
+    ciphertext = data[16:-16]
+    tag = data[-16:]
+    cipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
+    return cipher.decrypt_and_verify(ciphertext, tag)
 
 
 def send(client_socket, encryption_key, filename, path):
@@ -46,9 +49,8 @@ def send(client_socket, encryption_key, filename, path):
             bytes_read = f.read(1008)
             if not bytes_read:
                 # file transmitting is done
-                client_socket.close()
                 break
-            client_socket.send(encrypt(bytes_read, encryption_key))
+            client_socket.sendall(encrypt(bytes_read, encryption_key))
             # update the progress bar
             progress.update(len(bytes_read))
 
@@ -66,9 +68,14 @@ def receive(client_socket, encryption_key, filedata, path):
             if not bytes_read:
                 # nothing is received
                 # file transmitting is done
+                os.fsync(f.fileno())
                 break
             # write to the file the bytes we just received
             bytes_read = decrypt(bytes_read, encryption_key)
             f.write(bytes_read)
+            f.flush()
             # update the progress bar
             progress.update(len(bytes_read))
+            os.fsync(f.fileno())
+        f.close()
+    print('down')
