@@ -42,11 +42,11 @@ def send(client_socket, encryption_key, filename, path):
     client_socket.send(encrypt(f'{filename}:{filesize}'.encode(), encryption_key))
     time.sleep(0.1)
     progress = tqdm.tqdm(range(filesize), f"Sending {filename}", unit="B", unit_scale=True,
-                         unit_divisor=1008)
+                         unit_divisor=992)
     with open(path + filename, "rb") as f:
         while True:
             # read the bytes from the file
-            bytes_read = f.read(1008)
+            bytes_read = f.read(992)
             if not bytes_read:
                 # file transmitting is done
                 break
@@ -60,7 +60,7 @@ def receive(client_socket, encryption_key, filedata, path):
     filesize = int(filesize)
 
     progress = tqdm.tqdm(range(filesize), f"Receiving {filename}", unit="B", unit_scale=True,
-                         unit_divisor=1008)
+                         unit_divisor=992)
     with open(path + filename, "wb") as f:
         while True:
             # read 1024 bytes from the socket (receive)
