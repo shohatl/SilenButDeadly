@@ -60,10 +60,11 @@ def main():
                 os.remove('./temp.txt')
             elif (request == '<update>'):
                 print('update')
-        except:
-            pass
+        except Exception as e:
+            print(str(e))
         finally:
-            client_socket.close()
+            if(client_socket):
+                client_socket.close()
         print('closed connection')
 
 

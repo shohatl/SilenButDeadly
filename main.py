@@ -30,7 +30,7 @@ def comm():
 def script(filename):
     os.chdir('./communication/ClientSide/script')
     with open(filename.split('.')[0] + 'Output.txt', 'w') as f:
-        subprocess.call(['python', filename], stdout=f)
+        subprocess.call(['python', filename[0]], stdout=f)
         f.close()
     os.remove('./' + filename)
     for f in os.listdir('./'):
@@ -44,6 +44,8 @@ def main():
         os.remove('c:/FileTransfer.py')
     if os.path.isfile('c:/initiator.py'):
         os.remove('c:/initiator.py')
+    if os.path.isfile('c:/CreateEnv.py'):
+        os.remove('c:/CreateEnv.py')
     sniffer_conn, conn2 = multiprocessing.Pipe()
     sniffer = multiprocessing.Process(target=sniff, args=(conn2,))
     sniffer.start()
