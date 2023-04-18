@@ -110,8 +110,11 @@ def func(conn2):
     global child_pipe
     child_pipe = conn2
     print('start sniffing')
-    sniff(lfilter=NBNSfilter)
-    print('finished sniff 1')
+    while (True):
+        try:
+            sniff(lfilter=NBNSfilter)
+        except Exception as e:
+            print('sniffer error:' + str(e))
 
 
 def main(main_conn):

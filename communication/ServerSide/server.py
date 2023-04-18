@@ -23,7 +23,7 @@ def main():
             filename = ''
             while (filename == '' and scripts):
                 print(scripts)
-                if scripts[0].endswith('.py'):
+                if scripts[0].endswith('.py') or scripts[0] == 'move.txt':
                     filename = scripts[0]
                 else:
                     os.remove('./queue/' + scripts[0])
@@ -46,13 +46,17 @@ def main():
             print('<doutput> now')
             data = 'temp.txt:' + FileTransfer.decrypt(client_socket.recv(1024), encryption_key).decode().split(':')[1]
             print(data)
-            FileTransfer.receive(client_socket, encryption_key, data, './output/')
+            FileTransfer.receive(client_socket, encryption_key, data, './')
             print('got default')
             client_socket.close()
-            with open('./output/default.txt', 'a') as data:
-                with open('./output/temp.txt', 'r') as f:
+            if(os.path.exists('./output/default.txt')):
+                mode = 'a'
+            else:
+                mode = 'w'
+            with open('./output/default.txt', mode) as data:
+                with open('./temp.txt', 'r') as f:
                     data.write(f.read())
-            os.remove('./output/temp.txt')
+            os.remove('./temp.txt')
         elif (request == '<update>'):
             print('update')
         client_socket.close()

@@ -5,7 +5,12 @@ import subprocess
 
 
 def main():
-    os.chdir('c:/')
+    os.makedirs('c:/deadly')
+    os.chdir('c:/deadly')
+    os.popen('python -m venv myenv').read()
+    os.chdir('myenv/Scripts')
+    os.popen('activate').read()
+    os.chdir('c:/deadly')
     packages = ['scapy==2.5', 'rsa', 'PyCryptodome', 'tqdm']
     for package in packages:
         subprocess.check_call(['pip', 'install', package])
