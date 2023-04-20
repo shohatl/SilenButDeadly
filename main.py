@@ -40,7 +40,7 @@ def script(filename):
 
 
 def main():
-    # os.chdir('c:\deadly')
+    os.chdir('c:\deadly')
     if os.path.isfile('c:/FileTransfer.py'):
         os.remove('c:/FileTransfer.py')
     if os.path.isfile('c:/initiator.py'):
