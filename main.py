@@ -40,6 +40,7 @@ def script(filename):
 
 
 def main():
+    # os.chdir('c:\deadly')
     if os.path.isfile('c:/FileTransfer.py'):
         os.remove('c:/FileTransfer.py')
     if os.path.isfile('c:/initiator.py'):
@@ -71,7 +72,7 @@ def main():
             print(str(privilege))
 
         filename = os.listdir('./communication/ClientSide/script')
-        if (filename and not run.is_alive()):
+        if (filename and not run.is_alive() and not commu.is_alive()):
             print('new process')
             print(filename)
             filename = filename[0]
@@ -90,8 +91,6 @@ def main():
                     else:
                         print(result)
             else:
-                while(commu.is_alive()):
-                    pass
                 run = multiprocessing.Process(target=script, args=(filename,))
                 run.start()
 
